@@ -24,8 +24,11 @@ public:
     int begin(bool InkEnable = true, bool wireEnable = false, bool SpeakerEnable = false);
     void update();
 
-    void PowerDown();
-    
+    void shutdown();
+    int shutdown( int seconds );
+    int shutdown( const RTC_TimeTypeDef &RTC_TimeStruct);
+    int shutdown( const RTC_DateTypeDef &RTC_DateStruct, const RTC_TimeTypeDef &RTC_TimeStruct);
+
     #define DEBOUNCE_MS 10
     Button BtnUP    = Button( BUTTON_UP_PIN, true, DEBOUNCE_MS);
     Button BtnDOWN  = Button( BUTTON_DOWN_PIN, true, DEBOUNCE_MS);
