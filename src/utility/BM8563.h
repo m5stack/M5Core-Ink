@@ -41,7 +41,9 @@ public:
     int SetAlarmIRQ(int afterSeconds);
     int SetAlarmIRQ( const RTC_TimeTypeDef &RTC_TimeStruct);
     int SetAlarmIRQ( const RTC_DateTypeDef &RTC_DateStruct, const RTC_TimeTypeDef &RTC_TimeStruct);
-
+    
+    void clearIRQ();
+    void disableIRQ();
 public:
     uint8_t Second;
     uint8_t Minute;

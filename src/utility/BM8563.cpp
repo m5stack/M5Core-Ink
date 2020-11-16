@@ -251,7 +251,7 @@ int RTC::SetAlarmIRQ(int afterSeconds)
     return afterSeconds * div;
 }
 
-int RTC::SetAlarmIRQ( const RTC_TimeTypeDef &RTC_TimeStruct)
+int RTC::SetAlarmIRQ(const RTC_TimeTypeDef &RTC_TimeStruct)
 {
     uint8_t irq_enable = false;
     uint8_t out_buf[4] = {0x80, 0x80, 0x80, 0x80};
@@ -314,7 +314,8 @@ int RTC::SetAlarmIRQ(const RTC_DateTypeDef &RTC_DateStruct, const RTC_TimeTypeDe
         out_buf[2] = ByteToBcd2(RTC_DateStruct.Date) & 0x3f;
     }
 
-    if(RTC_DateStruct.WeekDay >= 0) {
+    if (RTC_DateStruct.WeekDay >= 0)
+    {
         irq_enable = true;
         out_buf[3] = ByteToBcd2(RTC_DateStruct.WeekDay) & 0x07;
     }
@@ -337,4 +338,16 @@ int RTC::SetAlarmIRQ(const RTC_DateTypeDef &RTC_DateStruct, const RTC_TimeTypeDe
     WriteReg(0x01, reg_value);
 
     return irq_enable ? 1 : 0;
+}
+
+void RTC::clearIRQ()
+{
+    uint8_t data = ReadReg(0x01);
+    WriteReg(0x01, data & 0xf3);
+}
+void RTC::disableIRQ()
+{
+    clearIRQ();
+    uint8_t data = ReadReg(0x01);
+    WriteReg(0x01, data & 0xfC);
 }
