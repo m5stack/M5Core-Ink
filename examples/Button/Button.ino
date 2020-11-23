@@ -33,7 +33,7 @@ void loop() {
     if( M5.BtnEXT.wasPressed()) ButtonTest("Btn EXT Pressed");
     if( M5.BtnPWR.wasPressed()){
         ButtonTest("Btn PWR Pressed");
-        M5.PowerDown();
+        M5.shutdown();
     }
     M5.update();
 }

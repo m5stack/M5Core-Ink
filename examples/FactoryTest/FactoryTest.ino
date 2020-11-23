@@ -372,7 +372,7 @@ void WifiScanPage()
         if( M5.BtnPWR.wasPressed())
         {
             digitalWrite(LED_EXT_PIN,LOW);
-            M5.PowerDown();
+            M5.shutdown();
         }
         if( M5.BtnDOWN.wasPressed() || M5.BtnUP.wasPressed()) break;
     }
@@ -409,7 +409,7 @@ void flushTimePage()
         if( M5.BtnPWR.wasPressed())
         {
             digitalWrite(LED_EXT_PIN,LOW);
-            M5.PowerDown();
+            M5.shutdown();
         }
         if( M5.BtnDOWN.wasPressed() || M5.BtnUP.wasPressed()) break;
     }
@@ -427,7 +427,7 @@ void checkBatteryVoltage( bool powerDownFlag )
     drawWarning("Battery voltage is low");
     if( powerDownFlag == true )
     {
-         M5.PowerDown();
+         M5.shutdown();
     }
     while( 1 )
     {
@@ -507,7 +507,7 @@ void loop()
     {
         Serial.printf("Btn %d was pressed \r\n",BUTTON_EXT_PIN);
         digitalWrite(LED_EXT_PIN,LOW);
-        M5.PowerDown();
+        M5.shutdown();
     }
     M5.update();
 }
