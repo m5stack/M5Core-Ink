@@ -83,7 +83,7 @@ void drawTimePage( )
     M5.rtc.GetTime(&RTCtime);
     drawTime(&RTCtime);
     minutes = RTCtime.Minutes;
-    M5.rtc.GetData(&RTCDate);
+    M5.rtc.GetDate(&RTCDate);
     darwDate(&RTCDate);
     TimePageSprite.pushSprite();
 }
@@ -109,7 +109,7 @@ void testPage()
 
     char timeStrbuff[64];
     M5.rtc.GetTime(&RTCtime);
-    M5.rtc.GetData(&RTCDate);
+    M5.rtc.GetDate(&RTCDate);
 
     sprintf(timeStrbuff,"%d/%02d/%02d %02d:%02d:%02d",
                         RTCDate.Year,RTCDate.Month,RTCDate.Date,
@@ -391,7 +391,7 @@ void flushTimePage()
         if( minutes != RTCtime.Minutes )
         {
             M5.rtc.GetTime(&RTCtime);
-            M5.rtc.GetData(&RTCDate);
+            M5.rtc.GetDate(&RTCDate);
             
             if( RTCtime.Minutes % 10 == 0 )
             {

@@ -9,7 +9,7 @@ char timeStrbuff[64];
 
 void flushTime(){
     M5.rtc.GetTime(&RTCtime);
-    M5.rtc.GetData(&RTCDate);
+    M5.rtc.GetDate(&RTCDate);
     
     sprintf(timeStrbuff,"%d/%02d/%02d %02d:%02d:%02d",
                         RTCDate.Year,RTCDate.Month,RTCDate.Date,
@@ -29,7 +29,7 @@ void setupTime(){
   RTCDate.Year = 2020;
   RTCDate.Month = 11;
   RTCDate.Date = 6;
-  M5.rtc.SetData(&RTCDate);
+  M5.rtc.SetDate(&RTCDate);
 }
 
 void setup() {
