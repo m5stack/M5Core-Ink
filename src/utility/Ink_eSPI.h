@@ -18,7 +18,7 @@ extern SPIClass ink_spi;
 #define INK_FULL_MODE       0x00
 #define INK_PARTIAL_MODE    0x01
 
-#define INK_CLENR_MODE0     0
+#define INK_CLEAR_MODE0     0
 #define INK_CLEAR_MODE1     1
 
 
@@ -76,7 +76,7 @@ public:
     bool isInit();
 
     int writeInitList(const unsigned char* list);
-    int clear(int mode = INK_CLENR_MODE0);
+    int clear(int mode = INK_CLEAR_MODE0);
     int clearDSRAM();
     int drawBuff(uint8_t* buff, bool bitMode = true);
     int drawBuff(uint8_t* lastbuff,uint8_t* buff,size_t size);
