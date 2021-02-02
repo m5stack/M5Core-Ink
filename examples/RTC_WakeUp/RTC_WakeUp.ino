@@ -8,7 +8,7 @@ void setup()
     digitalWrite(LED_EXT_PIN,LOW);
     if( !M5.M5Ink.isInit())
     {
-        Serial.printf("Ink Init faild");
+        Serial.printf("Ink Init failed");
         while (1) delay(100);   
     }
     M5.M5Ink.clear();
@@ -16,7 +16,7 @@ void setup()
     //creat ink refresh Sprite
     if( InkPageSprite.creatSprite(0,0,200,200,true) != 0 )
     {
-        Serial.printf("Ink Sprite creat faild");
+        Serial.printf("Ink Sprite create failed");
     }
     InkPageSprite.drawString(10,50,"Press PWR Btn for sleep");
     InkPageSprite.drawString(15,80,"after 5 sec wakeup.");
