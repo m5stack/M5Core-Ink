@@ -22,7 +22,7 @@ void setup() {
     //creat ink refresh Sprite
     if( InkPageSprite.creatSprite(0,0,200,200,true) != 0 )
     {
-        Serial.printf("Ink Sprite creat faild");
+        Serial.printf("Ink Sprite create failed");
     }
 }
 
