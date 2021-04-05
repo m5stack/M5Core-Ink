@@ -2,6 +2,8 @@
 #define __BM8563_H__
 
 #include <Wire.h>
+#include "esp_sleep.h"
+#define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 
 typedef struct RTC_Time
 {

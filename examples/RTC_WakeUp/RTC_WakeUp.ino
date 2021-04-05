@@ -18,20 +18,27 @@ void setup()
     {
         Serial.printf("Ink Sprite creat faild");
     }
-    InkPageSprite.drawString(10,50,"Press PWR Btn for sleep");
-    InkPageSprite.drawString(15,80,"after 5 sec wakeup.");
+    InkPageSprite.drawString(10,50,"Press EXT Btn for sleep");
+    InkPageSprite.drawString(15,80,"after 30 sec wakeup.");
+    InkPageSprite.drawString(10,110,"Press PWR Btn for");
+    InkPageSprite.drawString(15,140,"shutdown.");
     InkPageSprite.pushSprite();
 }
 
 void loop()
 {
-    //Press PWR Btn for sleep , after 5 sec wakeup.
+    //Press EXT Btn for sleep , after 30 sec wakeup.
+    if( M5.BtnEXT.wasPressed())
+    {
+        Serial.printf("Btn %d was pressed \r\n",BUTTON_EXT_PIN);
+        M5.M5Ink.deepSleepEink(); // Eink wakeup through setup routine
+        M5.deepSleepESP(30);
+    }
+    //Press PWR Btn for shutdown
     if( M5.BtnPWR.wasPressed())
     {
         Serial.printf("Btn %d was pressed \r\n",BUTTON_PWR_PIN);
-        M5.shutdown(5);
-        //M5.shutdown(RTC_TimeTypeDef(10,2,0));
+        M5.shutdown();
     }
-    //M5.rtc.SetAlarmIRQ(RTC_TimeTypeDef(10,2,0));
     M5.update();
 }
