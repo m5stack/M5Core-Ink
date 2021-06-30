@@ -2,15 +2,13 @@
 
 [English](README.md) | 中文
 
-<img src="http://docs.m5stack.com/assets/img/product_pics/core/coreink/coreink_01.webp" alt="CoreInk_Pic_01" width="350">
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/coreink/coreink_01.webp" alt="CoreInk_Pic_01" width="350">
 
 ## 描述
 
 **CoreInk** 是M5Stack推出的一款带有电子墨水屏(E-Ink)的主控设备，控制器采用ESP32-PICO-D4。正面嵌入了一块分辨率为200x200 @ 1.54"的电子墨水屏，支持黑/白显示。相对于普通的LCD的屏幕，电子墨水屏能够提供用户更好的文本阅读体验， 同时具有低功耗，掉电图像保持等特性。人机交互方面提供了拨轮开关，与物理按键, 集成LED指示灯与蜂鸣器。内置了390mAh锂电池，结合内部的RTC(BM8563)可实现定时休眠与唤醒功能，能够为设备提供较为优秀的续航能力。在机身的左侧和底部配有独立的电源按键与复位(RST)按键，方便使用与调试。开放了丰富的外设接口(HY2.0-4P、M-BUS、HAT模块接口)能够拓展各式各样的传感器设备，为后续的应用功能开发提供无限可能。
 
 ?>注意事项: 使用时请注意避免长时间高频刷新，建议刷新间隔为(15s/次), 请勿长时间暴露在紫外线下, 否则有可能对墨水屏造成不可逆的损害。
-
-<img src="http://docs.m5stack.com/assets/img/product_pics/core/coreink/coreink_02.webp" alt="CoreInk_Pic_02" width="350">
 
 ## 管脚映射
 
@@ -64,33 +62,6 @@
     </tbody>
 </table>
 
-## ESP32 ADC/DAC可映射引脚
-
-<table>
-      <thead>
-         <th>ADC1</th>
-         <th>ADC2</th>
-         <th>DAC1</th>
-         <th>DAC2</th>
-      </thead>
-      <tbody>
-      <tr>
-         <td>8 通道</td>
-         <td>10 通道</td>
-         <td>2 通道</td>
-         <td>2 通道</td>  
-      </tr>
-      <tr>
-         <td>G32-39</td>
-         <td>G0/2/4/12-15/25-27</td>
-         <td>G25</td>
-         <td>G26</td>
-      </tr>
-    </tbody>
-</table>
-
-有关引脚分配和引脚重新映射的更多信息，请参考[ESP32 datasheet](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/core/esp32_datasheet_cn.pdf)
-
 
 ## 相关链接
 
@@ -104,10 +75,6 @@
 
    - [Arduino API](http://docs.m5stack.com/#/zh_CN/arduino/arduino_home_page)
 
-## 教程&快速上手
-
-<a href="http://docs.m5stack.com/#/zh_CN/quick_start/coreink/quick_start_arduino"><el-tag effect="plain">Arduino</el-tag></a>
-
-## 原理图
-
-<img src="http://docs.m5stack.com/assets/img/product_pics/core/coreink/coreink_sch1.webp">
+-  **Document**
+   - [Arduino Quick Start](http://docs.m5stack.com/#/en/quick_start/coreink/quick_start_arduino)
+   - [Product Document](https://docs.m5stack.com/en/core/coreink)

@@ -2,15 +2,13 @@
 
 English | [中文](README_cn.md)
 
-<img src="http://docs.m5stack.com/assets/img/product_pics/core/coreink/coreink_01.webp" alt="CoreInk_Pic_01" width="350">
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/coreink/coreink_01.webp" alt="CoreInk_Pic_01" width="350">
 
 ## Description
 
 **CoreInk** is a brand new E-ink display in the M5Stack cores range. Controlled by the ESP32-PICO-D4 This new device includes a 200x200 1.54" Black and White E-Ink Display. Compared to a regular LCD，E-ink displays are easier on the eyes, which makes them a great choice for reading or viewing for longer periods. Other benefits are the low power consumption and the ability to retain the image even if power to the display is terminated。For control the CoreInk integrates an multi-function button,A physical button, integrated status LED and buzzer.The device also includes a 390mAh Lipo，RTC(BM8563)for controlling accurate timing and deep sleep funcionality. CoreInk features independent reset and power buttons，expansion ports(HY2.0-4P、M-BUS、HAT expansion)for attaching external sensors to expand functionailty，for unlimited possibilities。
 
 ?>Warning: Please avoid using high refresh rates，reccommended refresh rate is(15s/per refresh), Do not expose to ultraviolet rays for a long time, otherwise it may cause irreversible damage to the ink screen.
-
-<img src="http://docs.m5stack.com/assets/img/product_pics/core/coreink/coreink_02.webp" alt="CoreInk_Pic_02" width="350">
 
 ## Pin Mapping
 
@@ -48,9 +46,6 @@ Screen Resolution：200x200
  <tr><td>BM8563</td><td>SDA</td><td>SCL</td></tr>
 </table>
 
-## Coreink M-BUS Schematic
-
-<!-- <img class="pic" src="assets/img/product_pics/core/core2/core2_mbus.webp" width = "50%"> -->
 
 ## Coreink-HY2.0 4P Port
 
@@ -69,33 +64,6 @@ Screen Resolution：200x200
     </tbody>
 </table>
 
-## ESP32 ADC/DAC Mappable Pins
-
-<table>
-      <thead>
-         <th>ADC1</th>
-         <th>ADC2</th>
-         <th>DAC1</th>
-         <th>DAC2</th>
-      </thead>
-      <tbody>
-      <tr>
-         <td>8 Channel</td>
-         <td>10 Channel</td>
-         <td>2 Channel</td>
-         <td>2 Channel</td>  
-      </tr>
-      <tr>
-         <td>G32-39</td>
-         <td>G0/2/4/12-15/25-27</td>
-         <td>G25</td>
-         <td>G26</td>
-      </tr>
-    </tbody>
-</table>
-
-For more info on specific pin functions refer to the official ESP32 Docs[ESP32 datasheet](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/core/esp32_datasheet_en.pdf)
-
 ## Related Link
 
 - **Datasheet** 
@@ -105,13 +73,9 @@ For more info on specific pin functions refer to the official ESP32 Docs[ESP32 d
    - [GDEW0154M09](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/core/CoreInk-K048-GDEW0154M09%20V2.0%20Specification.pdf)
 
 -  **API**
-
    - [Arduino API](http://docs.m5stack.com/#/en/arduino/arduino_home_page)
 
-## Tutorial&Quick-Start
 
-<a href="http://docs.m5stack.com/#/en/quick_start/coreink/quick_start_arduino"><el-tag effect="plain">Arduino</el-tag></a>
-
-## Schematic
-
-<img src="http://docs.m5stack.com/assets/img/product_pics/core/coreink/coreink_sch1.webp">
+-  **Document**
+   - [Arduino Quick Start](http://docs.m5stack.com/#/en/quick_start/coreink/quick_start_arduino)
+   - [Product Document](https://docs.m5stack.com/en/core/coreink)
