@@ -10,7 +10,8 @@ void setup() {
         Serial.printf("Ink Init faild");
         while (1) delay(100);   
     }
-    M5.M5Ink.clear();
+    M5.M5Ink.clear(INK_CLEAR_MODE1); // seems to need use MODE1 after first clear after boot
+    // M5.M5Ink.clear();
     delay(1000);
     //creat ink refresh Sprite
     if( InkPageSprite.creatSprite(0,0,200,200,true) != 0 )
