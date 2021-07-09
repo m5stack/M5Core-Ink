@@ -217,40 +217,16 @@ void RTC::SetDate(RTC_DateTypeDef *RTC_DateStruct)
 
 int RTC::SetAlarmIRQ(int afterSeconds)
 {
-    uint8_t reg_value = 0;
-    reg_value = ReadReg(0x01);
-
-    if (afterSeconds < 0)
-    {
-        reg_value &= ~(1 << 0);
-        WriteReg(0x01, reg_value);
-        reg_value = 0x03;
-        WriteReg(0x0E, reg_value);
-        return -1;
-    }
-
-    uint8_t type_value = 2;
-    uint8_t div = 1;
-    if (afterSeconds > 255)
-    {
-        div = 60;
-        type_value = 0x83;
-    }
-    else
-    {
-        type_value = 0x82;
-    }
-
-    afterSeconds = (afterSeconds / div) & 0xFF;
-    WriteReg(0x0F, afterSeconds);
-    WriteReg(0x0E, type_value);
-
-    reg_value |= (1 << 0);
-    reg_value &= ~(1 << 7);
-    WriteReg(0x01, reg_value);
-    return afterSeconds * div;
+	if (afterSeconds > 0)
+	{
+  		esp_sleep_enable_timer_wakeup(afterSeconds * uS_TO_S_FACTOR);
+  		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
-
 int RTC::SetAlarmIRQ(const RTC_TimeTypeDef &RTC_TimeStruct)
 {
     uint8_t irq_enable = false;

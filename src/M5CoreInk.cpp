@@ -1,4 +1,5 @@
 #include "M5CoreInk.h"
+#include "driver/gpio.h"
 
 M5CoreInk::M5CoreInk(/* args */)
 {
@@ -12,11 +13,12 @@ int M5CoreInk::begin(bool InkEnable, bool wireEnable, bool SpeakerEnable)
 {
     pinMode(POWER_HOLD_PIN, OUTPUT);
     digitalWrite(POWER_HOLD_PIN, HIGH); // Hold power
-
+	gpio_hold_en((gpio_num_t)POWER_HOLD_PIN); // Hold power during deepSleep
+	
     pinMode(LED_EXT_PIN, OUTPUT);
 
     Serial.begin(115200);
-    Serial.printf("initializing.....OK\n");
+    Serial.printf("initializing github library OK\n");
 
     if (wireEnable)
     {
@@ -57,34 +59,32 @@ void M5CoreInk::update()
 
 void M5CoreInk::shutdown()
 {
-    M5Ink.deepSleep();
+	// Disable power to shutdown device
+	gpio_hold_dis((gpio_num_t)POWER_HOLD_PIN);
     digitalWrite(POWER_HOLD_PIN, LOW);
 }
-int M5CoreInk::shutdown(int seconds)
+int M5CoreInk::deepSleepESP(int seconds)
 {
-    M5Ink.deepSleep();
     rtc.clearIRQ();
     rtc.SetAlarmIRQ(seconds);
     delay(10);
-    digitalWrite(POWER_HOLD_PIN, LOW);
+	esp_deep_sleep_start();
     return 0;
 }
 int M5CoreInk::shutdown(const RTC_TimeTypeDef &RTC_TimeStruct)
 {
-    M5Ink.deepSleep();
     rtc.clearIRQ();
     rtc.SetAlarmIRQ(RTC_TimeStruct);
     delay(10);
-    digitalWrite(POWER_HOLD_PIN, LOW);
+	esp_deep_sleep_start();
     return 0;
 }
 int M5CoreInk::shutdown(const RTC_DateTypeDef &RTC_DateStruct, const RTC_TimeTypeDef &RTC_TimeStruct)
 {
-    M5Ink.deepSleep();
     rtc.clearIRQ();
     rtc.SetAlarmIRQ(RTC_DateStruct,RTC_TimeStruct);
     delay(10);
-    digitalWrite(POWER_HOLD_PIN, LOW);
+	esp_deep_sleep_start();
     return 0;
 }
 

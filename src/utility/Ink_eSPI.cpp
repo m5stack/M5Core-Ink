@@ -331,7 +331,7 @@ uint8_t Ink_eSPI::getPix(uint16_t posX, uint16_t posY)
     return 0;
 }
 
-void Ink_eSPI::deepSleep()
+void Ink_eSPI::deepSleepEink()
 {
     writeCMD(0X50);
     writeData(0xf7);

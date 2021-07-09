@@ -87,7 +87,7 @@ public:
     void setDrawAddr(uint16_t posx, uint16_t posy, uint16_t width, uint16_t height);
     uint8_t getPix(uint16_t posX, uint16_t posY);
 
-    void deepSleep();
+    void deepSleepEink();
     void powerHVON();
     void powerHVOFF();
 

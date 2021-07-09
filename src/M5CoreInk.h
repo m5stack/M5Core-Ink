@@ -25,7 +25,7 @@ public:
     void update();
 
     void shutdown();
-    int shutdown( int seconds );
+    int deepSleepESP( int seconds );
     int shutdown( const RTC_TimeTypeDef &RTC_TimeStruct);
     int shutdown( const RTC_DateTypeDef &RTC_DateStruct, const RTC_TimeTypeDef &RTC_TimeStruct);
 
