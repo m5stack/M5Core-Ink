@@ -138,6 +138,7 @@ void RTC::GetTime(RTC_TimeTypeDef *RTC_TimeStruct)
     }
 
     RTC_TimeStruct->Seconds = Bcd2ToByte(buf[0] & 0x7f); //秒
+    RTC_TimeStruct->VLFlag = (buf[0] & 0x10) >> 7;
     RTC_TimeStruct->Minutes = Bcd2ToByte(buf[1] & 0x7f); //分
     RTC_TimeStruct->Hours = Bcd2ToByte(buf[2] & 0x3f);   //时
 }
