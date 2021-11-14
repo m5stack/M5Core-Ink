@@ -12,7 +12,7 @@
 
 * **如果想要购买 CoreInk 的话，[点击这里](https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-22404213529.11.5d80e428hIJBNY&id=631373978142)**
 
-<img class="pic" src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/coreink/coreink_02.webp">
+<img class="pic" src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/coreink/coreink_02.webp" alt="CoreInk_Pic_01" width="350">
 
 ## 产品特性
 

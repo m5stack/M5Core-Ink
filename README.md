@@ -10,7 +10,7 @@ English | [中文](README_cn.md)
 
 **Warning**: Please avoid using high refresh rates，reccommended refresh rate is(15s/per refresh), Do not expose to ultraviolet rays for a long time, otherwise it may cause irreversible damage to the ink screen.
 
-<img class="pic" src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/coreink/coreink_02.webp">
+<img class="pic" src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/coreink/coreink_02.webp" alt="CoreInk_Pic_01" width="350">
 
 ## Product Features
 
