@@ -20,7 +20,7 @@ int M5CoreInk::begin(bool InkEnable, bool wireEnable, bool SpeakerEnable)
 
     if (wireEnable)
     {
-        Wire.begin(32, 33, 10000);
+        Wire.begin(32, 33, 100000UL);
     }
 
     if (SpeakerEnable)
