@@ -123,7 +123,7 @@ void testPage()
     
     char wifiStrBuff[64];
         
-    Wire.begin(32,33,10000);
+    Wire.begin(32,33,100000UL);
     int groveCheck = 0;
 
     Wire.beginTransmission(0x76);
