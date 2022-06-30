@@ -66,6 +66,7 @@ float getBatVoltage() {
 
     uint32_t BatVolmV = esp_adc_cal_raw_to_voltage(ADCValue, adc_chars);
     float BatVol      = float(BatVolmV) * 25.1 / 5.1 / 1000;
+    free(adc_chars);
     return BatVol;
 }
 
