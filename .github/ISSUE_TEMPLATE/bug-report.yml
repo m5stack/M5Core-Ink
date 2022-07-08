@@ -75,7 +75,7 @@ body:
       label: Issue checklist
       description: Please double-check that you have done each of the following things before submitting the issue.
       options:
-        - label: I searched for previous reports in [the issue tracker](https://github.com/m5stack/M5-CoreInk/issues?q=)
+        - label: I searched for previous reports in [the issue tracker](https://github.com/m5stack/M5Core-Ink/issues?q=)
           required: true
         - label: My report contains all necessary details
           required: true
