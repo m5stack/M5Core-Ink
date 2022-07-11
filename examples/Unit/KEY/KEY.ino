@@ -11,8 +11,8 @@
 * 在烧录前请按以下步骤添加 FastLED 库:
 * - Arduino menu --> Manage Libraries... --> FastLED --> install
 *
-* describe: KEY.  按键.
-* date: 2022/6/1
+* Product:  KEY.  按键.
+* Date: 2022/6/1
 *******************************************************************************
 */
 
@@ -31,22 +31,23 @@ void LED(void *parameter);
 void changeLedColor();
 
 void setup() {
-    M5.begin();  // Init M5Stack  初始化M5Stack
+    M5.begin();         // Init M5Stack  初始化M5Stack
     M5.M5Ink.isInit();  // Init E-INK screen.  初始化E-INK屏幕驱动
     M5.M5Ink.clear();
     delay(1000);
-    if( InkPageSprite.creatSprite(0,0,200,200,true) != 0 ){  // creat ink refresh Sprite.  创建画布.
-      Serial.printf("Ink Sprite creat faild");
+    if (InkPageSprite.creatSprite(0, 0, 200, 200, true) !=
+        0) {  // creat ink refresh Sprite.  创建画布.
+        Serial.printf("Ink Sprite creat faild");
+    } else {
+        Serial.printf("creatSprite success\n");
     }
-    else {
-      Serial.printf("creatSprite success\n");
-    }
-    InkPageSprite.drawString(35,50,"UNIT-KEY Example");
+    InkPageSprite.drawString(35, 50, "UNIT-KEY Example");
     InkPageSprite.pushSprite();
 
     pinMode(KEY_PIN, INPUT_PULLUP);  // Init Key pin.  初始化Key引脚.
 
-    FastLED.addLeds<SK6812, DATA_PIN, GRB>(leds, 1);  // Init FastLED.  初始化FastLED.
+    FastLED.addLeds<SK6812, DATA_PIN, GRB>(leds,
+                                           1);  // Init FastLED.  初始化FastLED.
 
     xTaskCreate(
         LED, "led", 1000, NULL, 0,
@@ -56,7 +57,8 @@ void setup() {
 void loop() {
     if (!digitalRead(KEY_PIN)) {  // If Key was pressed.  如果按键按下.
         changeLedColor();  // Change LED color.  更换LED呼吸灯颜色.
-        while (!digitalRead(KEY_PIN))  // Hold until the key released.  在松开按键前保持状态.
+        while (!digitalRead(
+            KEY_PIN))  // Hold until the key released.  在松开按键前保持状态.
             ;
     }
     delay(100);
@@ -65,12 +67,14 @@ void loop() {
 void LED(void *parameter) {
     leds[0] = CRGB::Red;
     for (;;) {
-        for (int i = 0; i < 255; i++) {  // Set LED brightness from 0 to 255.  设置LED亮度从0到255.
+        for (int i = 0; i < 255;
+             i++) {  // Set LED brightness from 0 to 255.  设置LED亮度从0到255.
             FastLED.setBrightness(i);
             FastLED.show();
             delay(5);
         }
-        for (int i = 255; i > 0; i--) {  // Set LED brightness from 255 to 0.  设置LED亮度从255到0.
+        for (int i = 255; i > 0;
+             i--) {  // Set LED brightness from 255 to 0.  设置LED亮度从255到0.
             FastLED.setBrightness(i);
             FastLED.show();
             delay(5);
@@ -82,7 +86,8 @@ void LED(void *parameter) {
 void changeLedColor() {
     ledColor++;
     if (ledColor > 2) ledColor = 0;
-    switch (ledColor) {  // Change LED colors between R,G,B.  在红绿蓝中切换LED颜色.
+    switch (
+        ledColor) {  // Change LED colors between R,G,B.  在红绿蓝中切换LED颜色.
         case 0:
             leds[0] = CRGB::Red;
             break;

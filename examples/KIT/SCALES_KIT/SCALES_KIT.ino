@@ -7,8 +7,8 @@
 information：https://docs.m5stack.com/en/app/scales_kit
 * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/app/scales_kit
 *
-* describe: SCALES KIT WEIGHT UNIT EXAMPLE.
-* date：2022/02/23
+* Product:  SCALES KIT WEIGHT UNIT EXAMPLE.
+* Date: 2022/02/23
 *******************************************************************************
 Connect WEIGHT UNIT to port A (G32/33)
 Calibration Instructions: Push the roller switch to tare up (0g calibration)
@@ -38,7 +38,7 @@ M5Canvas canvas(&display);
 HX711 scale;
 
 void setup() {
-    M5.begin(); 
+    M5.begin();
 
     display.begin();
 
