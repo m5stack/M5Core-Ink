@@ -39,10 +39,13 @@ void loop() {
     if (M5.BtnPWR.wasPressed()) {
         Serial.printf("Btn %d was pressed \r\n", BUTTON_PWR_PIN);
         M5.shutdown(5);  // Turn off the power and wake up the device through
-                         // RTC after the delay of 5 seconds.
-                         // 关闭电源,在延时5秒结束后通过RTC唤醒设备。
-        // M5.shutdown(RTC_TimeTypeDef(10,2,0));
+        // RTC after the delay of 5 seconds.
+        // 关闭电源,在延时5秒结束后通过RTC唤醒设备。
+        // M5.shutdown(RTC_TimeTypeDef(0, 0, 5));
     }
-    // M5.rtc.SetAlarmIRQ(RTC_TimeTypeDef(10,2,0));
-    M5.update();  // Refresh device button. 刷新设备按键
+    M5.update();                  // Refresh device button. 刷新设备按键
+    if (M5.BtnUP.wasPressed()) {  // The program continues to execute after 5
+                                  // seconds
+        Serial.printf("Btn %d was pressed \r\n", BUTTON_UP_PIN);
+    }
 }
