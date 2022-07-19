@@ -8,6 +8,7 @@ typedef struct RTC_Time
     int8_t Hours;
     int8_t Minutes;
     int8_t Seconds;
+    bool VLFlag;
     RTC_Time() : Hours(),Minutes(),Seconds(){}
     RTC_Time(int8_t h,int8_t m,int8_t s) : Hours(h),Minutes(m),Seconds(s){}
 } RTC_TimeTypeDef;
@@ -41,7 +42,7 @@ public:
     int SetAlarmIRQ(int afterSeconds);
     int SetAlarmIRQ( const RTC_TimeTypeDef &RTC_TimeStruct);
     int SetAlarmIRQ( const RTC_DateTypeDef &RTC_DateStruct, const RTC_TimeTypeDef &RTC_TimeStruct);
-    
+
     void clearIRQ();
     void disableIRQ();
 public:
