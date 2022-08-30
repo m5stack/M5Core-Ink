@@ -33,55 +33,50 @@ const int daylightOffset_sec = 3600;
 
 Ink_Sprite TimePageSprite(&M5.M5Ink);
 
-void printLocalTimeAndSetRTC()
-{
+void printLocalTimeAndSetRTC() {
     struct tm timeinfo;
 
-    if(getLocalTime(&timeinfo) == false)
-    {
+    if (getLocalTime(&timeinfo) == false) {
         Serial.println("Failed to obtain time");
         return;
     }
     Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
 
     RTC_TimeTypeDef time;
-    time.Hours = timeinfo.tm_hour;
+    time.Hours   = timeinfo.tm_hour;
     time.Minutes = timeinfo.tm_min;
     time.Seconds = timeinfo.tm_sec;
     M5.rtc.SetTime(&time);
 
     RTC_DateTypeDef date;
-    date.Date = timeinfo.tm_mday;
+    date.Date  = timeinfo.tm_mday;
     date.Month = timeinfo.tm_mon + 1;
-    date.Year = timeinfo.tm_year + 1900;
+    date.Year  = timeinfo.tm_year + 1900;
     M5.rtc.SetDate(&date);
 }
 
-void getNTPTime()
-{
+void getNTPTime() {
     // Try to connect for 10 seconds
     uint32_t connect_timeout = millis() + 10000;
 
     Serial.printf("Connecting to %s ", ssid);
     WiFi.begin(ssid, password);
-    while((WiFi.status() != WL_CONNECTED) && (millis() < connect_timeout))
-    {
+    while ((WiFi.status() != WL_CONNECTED) && (millis() < connect_timeout)) {
         delay(500);
         Serial.print(".");
     }
-    if(WiFi.status() != WL_CONNECTED)
-    {
+    if (WiFi.status() != WL_CONNECTED) {
         // WiFi connection failed - set fantasy time and date
         RTC_TimeTypeDef time;
-        time.Hours = 6;
+        time.Hours   = 6;
         time.Minutes = 43;
         time.Seconds = 50;
         M5.rtc.SetTime(&time);
 
         RTC_DateTypeDef date;
-        date.Date = 4;
+        date.Date  = 4;
         date.Month = 12;
-        date.Year = 2020;
+        date.Year  = 2020;
         M5.rtc.SetDate(&date);
         return;
     }
@@ -95,18 +90,17 @@ void getNTPTime()
     WiFi.mode(WIFI_OFF);
 }
 
-void drawTimeAndDate(RTC_TimeTypeDef time, RTC_DateTypeDef date)
-{
+void drawTimeAndDate(RTC_TimeTypeDef time, RTC_DateTypeDef date) {
     char buf[11];
 
     snprintf(buf, 6, "%02d:%02d", time.Hours, time.Minutes);
     TimePageSprite.drawString(40, 20, buf, &AsciiFont24x48);
-    snprintf(buf, 11, "%02d.%02d.%02d", date.Date, date.Month, date.Year - 2000);
+    snprintf(buf, 11, "%02d.%02d.%02d", date.Date, date.Month,
+             date.Year - 2000);
     TimePageSprite.drawString(4, 70, buf, &AsciiFont24x48);
 }
 
-void setup()
-{
+void setup() {
     // Check power on reason before calling M5.begin()
     //  which calls Rtc.begin() which clears the timer flag.
     Wire1.begin(21, 22);
@@ -116,29 +110,24 @@ void setup()
     // Green LED - indicates ESP32 is running
     digitalWrite(LED_EXT_PIN, LOW);
 
-    if(M5.M5Ink.isInit() == false)
-    {
+    if (M5.M5Ink.isInit() == false) {
         Serial.printf("Ink Init failed");
-        while(1) delay(100);
+        while (1) delay(100);
     }
 
     RTC_TimeTypeDef time;
     RTC_DateTypeDef date;
 
     // Check timer flag
-    if((data & 0b00000100) == 0b00000100)
-    {
+    if ((data & 0b00000100) == 0b00000100) {
         Serial.println("Power on by: RTC timer");
         M5.rtc.GetTime(&time);
         M5.rtc.GetDate(&date);
         // Full refresh once per hour
-        if(time.Minutes == FULL_REFRESH_MINUTE - 1)
-        {
-          M5.M5Ink.clear();
+        if (time.Minutes == FULL_REFRESH_MINUTE - 1) {
+            M5.M5Ink.clear();
         }
-    }
-    else
-    {
+    } else {
         Serial.println("Power on by: power button");
         M5.M5Ink.clear();
         // Fetch current time from Internet
@@ -160,8 +149,7 @@ void setup()
     TimePageSprite.pushSprite();
 
     // Wait until full minute, e.g. seconds are 0
-    while((time.Seconds != 0))
-    {
+    while ((time.Seconds != 0)) {
         M5.rtc.GetTime(&time);
         delay(200);
     }
@@ -175,8 +163,7 @@ void setup()
     Serial.flush();
 
     // Full refresh once per hour
-    if(time.Minutes == FULL_REFRESH_MINUTE - 1)
-    {
+    if (time.Minutes == FULL_REFRESH_MINUTE - 1) {
         // Allow extra time for full ink refresh
         // Shutdown for 55 seconds only
         M5.shutdown(55);
@@ -186,7 +173,5 @@ void setup()
     M5.shutdown(58);
 }
 
-void loop()
-{
-
+void loop() {
 }

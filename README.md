@@ -1,4 +1,4 @@
-# CoreInk Library
+# Core-Ink Library
 
 English | [中文](README_cn.md)
 
@@ -22,6 +22,9 @@ English | [中文](README_cn.md)
 - Built-in Magnet
 - Internal Battery
 - Expandable
+
+* **In order to buy Core-Ink, please [Click here](https://shop.m5stack.com/products/m5stack-esp32-core-ink-development-kit1-54-elnk-display)**
+
 
 ## More Information
 -  **API**
