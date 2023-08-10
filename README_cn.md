@@ -1,5 +1,9 @@
 # CoreInk Library
 
+[![Arduino Compile](https://github.com/m5stack/M5Core-Ink/actions/workflows/arduino-action-coreink-compile.yml/badge.svg)](https://github.com/m5stack/M5Core-Ink/actions/workflows/arduino-action-paper-compile.yml)
+[![Arduino Lint](https://github.com/m5stack/M5Core-Ink/actions/workflows/Arduino-Lint-Check.yml/badge.svg)](https://github.com/m5stack/M5Core-Ink/actions/workflows/Arduino-Lint-Check.yml)
+[![Clang Format](https://github.com/m5stack/M5Core-Ink/actions/workflows/clang-format-check.yml/badge.svg)](https://github.com/m5stack/M5Core-Ink/actions/workflows/clang-format-check.yml)
+
 [English](README.md) | 中文
 
 <img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/coreink/coreink_01.webp" alt="CoreInk_Pic_01" width="350">

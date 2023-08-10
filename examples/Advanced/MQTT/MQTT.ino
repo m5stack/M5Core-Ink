@@ -70,7 +70,7 @@ void loop() {
     if (now - lastMsg > 2000) {
         lastMsg = now;
         ++value;
-        snprintf(msg, MSG_BUFFER_SIZE, "hello world #%ld",
+        snprintf(msg, MSG_BUFFER_SIZE, "hello world #%d",
                  value);  // Format to the specified string and store it in MSG.
                           // 格式化成指定字符串并存入msg中
         Serial.print("Publish message: ");

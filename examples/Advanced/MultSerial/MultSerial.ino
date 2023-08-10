@@ -10,7 +10,7 @@
 * Date: 2021/8/5
 ******************************************************************************
 */
-#include <M5Core2.h>
+#include <M5CoreInk.h>
 
 void setup() {
     M5.begin();  // Init M5Core2.  初始化 M5Core2
@@ -27,14 +27,10 @@ void loop() {
                                  // the CH.  把串口读取到的数据复制给ch
         Serial2.write(
             ch);  // Serial port 2 Outputs the CH content.  串口2输出ch的内容
-        M5.Lcd.printf("Serial:%d\n",
-                      ch);  // The screen prints the data received by serial
-                            // port 2.  屏幕打印串口2收到的数据
     }
 
     if (Serial2.available()) {
         int ch = Serial2.read();
         Serial.write(ch);
-        M5.Lcd.printf("Serial2:%d\n", ch);
     }
 }

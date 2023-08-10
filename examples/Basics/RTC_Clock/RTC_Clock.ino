@@ -91,12 +91,11 @@ void getNTPTime() {
 }
 
 void drawTimeAndDate(RTC_TimeTypeDef time, RTC_DateTypeDef date) {
-    char buf[11];
-
-    snprintf(buf, 6, "%02d:%02d", time.Hours, time.Minutes);
+    char buf[20] = {0};
+    sprintf(buf, "%02d:%02d", time.Hours, time.Minutes);
     TimePageSprite.drawString(40, 20, buf, &AsciiFont24x48);
-    snprintf(buf, 11, "%02d.%02d.%02d", date.Date, date.Month,
-             date.Year - 2000);
+    memset(buf, 0, 20);
+    sprintf(buf, "%02d.%02d.%02d", date.Date, date.Month, date.Year - 2000);
     TimePageSprite.drawString(4, 70, buf, &AsciiFont24x48);
 }
 
