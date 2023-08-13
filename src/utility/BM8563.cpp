@@ -224,8 +224,8 @@ int RTC::SetAlarmIRQ(const RTC_TimeTypeDef &RTC_TimeStruct) {
         out_buf[1] = ByteToBcd2(RTC_TimeStruct.Hours) & 0x3f;
     }
 
-    out_buf[2] = 0x00;
-    out_buf[3] = 0x00;
+    out_buf[2] = 0x80;
+    out_buf[3] = 0x80;
 
     uint8_t reg_value = ReadReg(0x01);
 
