@@ -26,14 +26,14 @@ int M5CoreInk::begin(bool InkEnable, bool wireEnable, bool SpeakerEnable) {
     }
 
     rtc.begin();
-    rtc.clearIRQ();
+    rtc.disableIRQ();
 
     if (InkEnable) {
         M5Ink.begin();
-        if (!M5.M5Ink.isInit()) {
-            Serial.printf("Ink initializ is faild\n");
-            return -1;
-        }
+        // if (!M5.M5Ink.isInit()) {
+        //     Serial.printf("Ink initializ is faild\n");
+        //     return -1;
+        // }
     }
 
     return 0;
@@ -45,53 +45,39 @@ void M5CoreInk::update() {
     BtnMID.read();
     BtnEXT.read();
     BtnPWR.read();
-
     Speaker.update();
 }
 
 void M5CoreInk::shutdown() {
     M5Ink.deepSleep();
-
-    pinMode(1, OUTPUT);
-    digitalWrite(1, LOW);
-
+    delay(10);
+    esp_deep_sleep_start();
     digitalWrite(POWER_HOLD_PIN, LOW);
 }
 int M5CoreInk::shutdown(int seconds) {
-    M5Ink.deepSleep();
-    rtc.clearIRQ();
+    rtc.disableIRQ();
     rtc.SetAlarmIRQ(seconds);
-    delay(10);
+    gpio_wakeup_enable(GPIO_NUM_19, gpio_int_type_t::GPIO_INTR_LOW_LEVEL);
+    esp_sleep_enable_gpio_wakeup();
+    shutdown();
 
-    pinMode(1, OUTPUT);
-    digitalWrite(1, LOW);
-
-    digitalWrite(POWER_HOLD_PIN, LOW);
     return 0;
 }
 int M5CoreInk::shutdown(const RTC_TimeTypeDef &RTC_TimeStruct) {
-    M5Ink.deepSleep();
-    rtc.clearIRQ();
+    rtc.disableIRQ();
     rtc.SetAlarmIRQ(RTC_TimeStruct);
-    delay(10);
-
-    pinMode(1, OUTPUT);
-    digitalWrite(1, LOW);
-
-    digitalWrite(POWER_HOLD_PIN, LOW);
+    gpio_wakeup_enable(GPIO_NUM_19, gpio_int_type_t::GPIO_INTR_LOW_LEVEL);
+    esp_sleep_enable_gpio_wakeup();
+    shutdown();
     return 0;
 }
 int M5CoreInk::shutdown(const RTC_DateTypeDef &RTC_DateStruct,
                         const RTC_TimeTypeDef &RTC_TimeStruct) {
-    M5Ink.deepSleep();
-    rtc.clearIRQ();
+    rtc.disableIRQ();
     rtc.SetAlarmIRQ(RTC_DateStruct, RTC_TimeStruct);
-    delay(10);
-
-    pinMode(1, OUTPUT);
-    digitalWrite(1, LOW);
-
-    digitalWrite(POWER_HOLD_PIN, LOW);
+    gpio_wakeup_enable(GPIO_NUM_19, gpio_int_type_t::GPIO_INTR_LOW_LEVEL);
+    esp_sleep_enable_gpio_wakeup();
+    shutdown();
     return 0;
 }
 
