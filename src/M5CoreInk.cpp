@@ -49,8 +49,9 @@ void M5CoreInk::update() {
 }
 
 void M5CoreInk::shutdown() {
-    M5Ink.deepSleep();
-    delay(10);
+    // M5Ink.deepSleep();
+    M5Ink.powerHVOFF();
+    delay(50);
     esp_deep_sleep_start();
     digitalWrite(POWER_HOLD_PIN, LOW);
 }

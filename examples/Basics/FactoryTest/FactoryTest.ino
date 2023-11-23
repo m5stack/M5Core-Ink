@@ -1,4 +1,3 @@
-
 #include <WiFi.h>
 
 #include "M5CoreInk.h"
@@ -6,14 +5,35 @@
 #include "icon.h"
 
 Ink_Sprite TimePageSprite(&M5.M5Ink);
-Ink_Sprite TimeSprite(&M5.M5Ink);
-Ink_Sprite DateSprite(&M5.M5Ink);
 
 RTC_TimeTypeDef RTCtime, RTCTimeSave;
 RTC_DateTypeDef RTCDate;
 uint8_t second = 0, minutes = 0;
 
 bool testMode = false;
+
+void set_led(bool status) {
+    digitalWrite(LED_EXT_PIN, !status);
+}
+
+void timer_wakeup_test() {
+    M5.M5Ink.setEpdMode(epd_mode_t::epd_quality);
+    M5.M5Ink.clear();  // clear the screen. 清屏
+    TimePageSprite.clear();
+    // // creat ink Sprite. 创建图像区域
+    TimePageSprite.drawString(10, 50,
+                              "Click EXT Btn Sleep 5s");  // draw string.
+    TimePageSprite.pushSprite();
+
+    while (1) {
+        M5.update();
+        if (M5.BtnEXT.wasPressed()) {
+            set_led(false);
+            Serial.println("Sleep 5s...");
+            M5.shutdown(5);
+        }
+    }
+}
 
 void drawImageToSprite(int posX, int posY, image_t *imagePtr,
                        Ink_Sprite *sprite) {
@@ -79,9 +99,7 @@ void drawWarning(const char *str) {
     M5.M5Ink.clear();
     TimePageSprite.clear(CLEAR_DRAWBUFF | CLEAR_LASTBUFF);
     drawImageToSprite(76, 40, &warningImage, &TimePageSprite);
-    int length = 0;
-    while (*(str + length) != '\0') length++;
-    TimePageSprite.drawString((200 - length * 8) / 2, 100, str, &AsciiFont8x16);
+    TimePageSprite.drawString(30, 100, str, &fonts::AsciiFont8x16);
     TimePageSprite.pushSprite();
 }
 
@@ -95,14 +113,19 @@ void drawTimePage() {
 }
 
 void testPage() {
+    M5.M5Ink.setEpdMode(epd_mode_t::epd_quality);
     uint8_t buttonMark = 0x00, buttonMarkSave = 0;
-
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
     WiFi.scanNetworks(true);
 
     M5.M5Ink.clear();
     TimePageSprite.clear();
+    TimePageSprite.drawString(10, 41, "wifi scanning...",
+                              &fonts::AsciiFont8x16);
+    TimePageSprite.pushSprite();
+    TimePageSprite.clear();
+    M5.M5Ink.setEpdMode(epd_mode_t::epd_text);
 
     const char BtnUPStr[]   = "Btn UP Pressed";
     const char BtnDOWNStr[] = "Btn DOWN Pressed";
@@ -158,7 +181,7 @@ void testPage() {
         } else if (WifiRes == -1) {
         } else if (WifiRes == 0) {
             TimePageSprite.drawString(10, 41, "no networks found",
-                                      &AsciiFont8x16);
+                                      &fonts::AsciiFont8x16);
             break;
         } else {
             String SSIDStr = WiFi.SSID(0);
@@ -168,11 +191,13 @@ void testPage() {
             }
             int32_t rssi = (WiFi.RSSI(0) < -100) ? -100 : WiFi.RSSI(0);
             sprintf(wifiStrBuff, "wifi %s  r:%d", SSIDStr.c_str(), rssi);
-            TimePageSprite.drawString(10, 41, wifiStrBuff, &AsciiFont8x16);
+            TimePageSprite.drawString(10, 41, wifiStrBuff,
+                                      &fonts::AsciiFont8x16);
             break;
         }
         delay(100);
     }
+    M5.M5Ink.clear();
     TimePageSprite.pushSprite();
 
     Wire1.begin(-1, -1);
@@ -189,7 +214,7 @@ void testPage() {
             while (!((mark >> index) & 0x01)) index++;
             Serial.printf("index = %d\r\n", index);
             TimePageSprite.drawString(10, 59 + (index * 18), strPtrBuff[index],
-                                      &AsciiFont8x16);
+                                      &fonts::AsciiFont8x16);
             TimePageSprite.pushSprite();
             buttonMarkSave = buttonMark;
             // digitalWrite(21,(pinFlag)?HIGH:LOW);
@@ -215,7 +240,8 @@ void testPage() {
     uint8_t testWritPinMap[4] = {13, 18, 26, 23};
     uint8_t testReadPinMap[4] = {14, 36, 34, 25};
 
-    ink_spi.end();
+    SPI.end();
+
     for (int i = 0; i < 4; i++) {
         pinMode(testWritPinMap[i], OUTPUT);
         pinMode(testReadPinMap[i], INPUT);
@@ -233,7 +259,10 @@ void testPage() {
         }
     }
     Serial.printf("EXT Check Mark %02X\r\n", pinCheckMark);
-    ink_spi.begin(INK_SPI_SCK, -1, INK_SPI_MOSI, -1);
+
+    SPI.begin(INK_SPI_SCK, -1, INK_SPI_MOSI, -1);
+
+    // ink_spi.begin(INK_SPI_SCK, -1, INK_SPI_MOSI, -1);
 
     char pinStrBuff[64];
     if (pinCheckMark != 0xff) {
@@ -242,7 +271,7 @@ void testPage() {
         sprintf(pinStrBuff, "EXT PIN check %02X Ok", pinCheckMark);
     }
     M5.Speaker.tone(2700);
-    TimePageSprite.drawString(10, 149, pinStrBuff, &AsciiFont8x16);
+    TimePageSprite.drawString(10, 149, pinStrBuff, &fonts::AsciiFont8x16);
     TimePageSprite.pushSprite();
     M5.Speaker.mute();
 
@@ -289,33 +318,41 @@ void testPage() {
     } else {
         sprintf(pinStrBuff, "HAT PIN check %02X Ok", pinCheckMark);
     }
-    TimePageSprite.drawString(10, 167, pinStrBuff, &AsciiFont8x16);
+
+    TimePageSprite.drawString(10, 167, pinStrBuff, &fonts::AsciiFont8x16);
     TimePageSprite.pushSprite();
+
+    if (pinCheckMark != 0xff) {
+        while (1) {
+            delay(100);
+        }
+    }
 
     M5.M5Ink.clear();
     TimePageSprite.clear(CLEAR_DRAWBUFF | CLEAR_LASTBUFF);
 }
 
 void WifiScanPage() {
+    M5.M5Ink.setEpdMode(epd_mode_t::epd_quality);
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
     WiFi.scanNetworks(true);
-
-    // M5.M5Ink.clear();
-    // TimePageSprite.clear( CLEAR_DRAWBUFF | CLEAR_LASTBUFF );
+    M5.M5Ink.clear();
+    TimePageSprite.clear(CLEAR_DRAWBUFF | CLEAR_LASTBUFF);
     drawImageToSprite(0, 0, &wifiScanImage, &TimePageSprite);
     TimePageSprite.pushSprite();
 
     char wifiStrBuff[64];
     int flushCount     = 1000;
     bool wifiReadyFlag = false;
+    M5.M5Ink.setEpdMode(epd_mode_t::epd_text);
     while (1) {
         int WifiRes = WiFi.scanComplete();
         if (WifiRes == -2) {
         } else if (WifiRes == -1) {
         } else if (WifiRes == 0) {
             TimePageSprite.drawString(10, 41, "no networks found",
-                                      &AsciiFont8x16);
+                                      &fonts::AsciiFont8x16);
             break;
         } else {
             TimePageSprite.clear();
@@ -330,11 +367,11 @@ void WifiScanPage() {
                 int32_t rssi = (WiFi.RSSI(i) < -100) ? -100 : WiFi.RSSI(i);
                 sprintf(wifiStrBuff, "SSID:%s", SSIDStr.c_str());
                 TimePageSprite.drawString(10, 50 + i * 18, wifiStrBuff,
-                                          &AsciiFont8x16);
+                                          &fonts::AsciiFont8x16);
 
                 sprintf(wifiStrBuff, "%02ddb", rssi);
                 TimePageSprite.drawString(150, 50 + i * 18, wifiStrBuff,
-                                          &AsciiFont8x16);
+                                          &fonts::AsciiFont8x16);
             }
             wifiReadyFlag = true;
             WiFi.scanDelete();
@@ -343,6 +380,7 @@ void WifiScanPage() {
         delay(10);
         if ((flushCount > 1000) && (wifiReadyFlag == true)) {
             TimePageSprite.pushSprite();
+
             flushCount = 0;
         }
         flushCount++;
@@ -358,9 +396,11 @@ void WifiScanPage() {
 }
 
 void flushTimePage() {
-    // M5.M5Ink.clear();
-    // TimePageSprite.clear( CLEAR_DRAWBUFF | CLEAR_LASTBUFF );
+    M5.M5Ink.setEpdMode(epd_mode_t::epd_quality);
+    M5.M5Ink.clear();
+    TimePageSprite.clear(CLEAR_DRAWBUFF | CLEAR_LASTBUFF);
     drawTimePage();
+    M5.M5Ink.setEpdMode(epd_mode_t::epd_text);
     while (1) {
         M5.rtc.GetTime(&RTCtime);
         if (minutes != RTCtime.Minutes) {
@@ -442,16 +482,23 @@ void setup() {
 
     TimePageSprite.creatSprite(0, 0, 200, 200);
     // TimePageSprite.clear( CLEAR_DRAWBUFF | CLEAR_LASTBUFF );
+
+    // timer_wakeup_test();
+
     if (testMode) {
         testPage();
+        timer_wakeup_test();
     }
     drawTimePage();
     M5.Speaker.tone(2700, 200);
+    delay(200);
+    M5.Speaker.mute();
 }
 
 void loop() {
     flushTimePage();
     WifiScanPage();
+
     /*
     if( M5.BtnUP.wasPressed())
     {
