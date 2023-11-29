@@ -2,6 +2,9 @@
 #define __BM8563_H__
 
 #include <Wire.h>
+#include "i2c_device.h"
+
+#define BM8563_I2C_ADDR 0x51
 
 typedef struct RTC_Time {
     int8_t Hours;
@@ -30,8 +33,7 @@ class RTC {
     RTC();
 
     void begin(void);
-    void WriteReg(uint8_t reg, uint8_t data);
-    uint8_t ReadReg(uint8_t reg);
+
     void GetBm8563Time(void);
 
     void SetTime(RTC_TimeTypeDef *RTC_TimeStruct);
@@ -68,6 +70,8 @@ class RTC {
 
     uint8_t Bcd2ToByte(uint8_t Value);
     uint8_t ByteToBcd2(uint8_t Value);
+
+    I2C_DEVICE _i2c;
 
    private:
     /*定义数组用来存储读取的时间数据 */

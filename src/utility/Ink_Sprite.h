@@ -2,19 +2,19 @@
 #define _INK_SPRITE_H_
 
 #include "Ink_eSPI.h"
+#include "M5GFX.h"
 
 #define CLEAR_DRAWBUFF 0x01
 #define CLEAR_LASTBUFF 0x02
 
-class Ink_Sprite : private Ink_eSPI {
+class Ink_Sprite : public M5Canvas {
    public:
-   public:
-    Ink_Sprite(Ink_eSPI* dev);
-    ~Ink_Sprite();
-
-    int creatSprite(uint16_t posX, uint16_t posY, uint16_t width = 200,
+    Ink_Sprite() : M5Canvas() {
+    }
+    Ink_Sprite(LovyanGFX* parent) : M5Canvas(parent) {
+    }
+    int creatSprite(uint16_t posX = 0, uint16_t posY = 0, uint16_t width = 200,
                     uint16_t height = 200, bool copyFromMem = true);
-
     int pushSprite();
     int deleteSprite();
 
@@ -28,9 +28,9 @@ class Ink_Sprite : private Ink_eSPI {
                   uint8_t* imageDataptr);
 
     void drawChar(uint16_t posX, uint16_t posY, char charData,
-                  Ink_eSPI_font_t* fontPtr = &AsciiFont8x16);
+                  const lgfx::FixedBMPfont* fontPtr = &fonts::AsciiFont24x48);
     void drawString(uint16_t posX, uint16_t posY, const char* charData,
-                    Ink_eSPI_font_t* fontPtr = &AsciiFont8x16);
+                    const lgfx::FixedBMPfont* fontPtr = &fonts::AsciiFont8x16);
 
     uint8_t* getSpritePtr() {
         return _spriteBuff;
@@ -50,7 +50,6 @@ class Ink_Sprite : private Ink_eSPI {
     }
 
    private:
-    Ink_eSPI* _dev;
     bool isCreat = false;
     uint16_t _posX, _posY;
     uint16_t _width, _height;
