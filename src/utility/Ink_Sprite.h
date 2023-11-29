@@ -59,5 +59,4 @@ class Ink_Sprite : public M5Canvas {
     uint8_t* _lastBuff   = nullptr;
 };
 
-
 #endif
