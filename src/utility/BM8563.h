@@ -68,8 +68,8 @@ class RTC {
     void DataMask();
     void Str2Time(void);
 
-    uint8_t Bcd2ToByte(uint8_t Value);
-    uint8_t ByteToBcd2(uint8_t Value);
+    uint8_t bcd2ToByte(uint8_t value);
+    uint8_t byteToBcd2(uint8_t value);
 
     I2C_DEVICE _i2c;
 

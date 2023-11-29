@@ -102,8 +102,14 @@ void drawTimeAndDate(RTC_TimeTypeDef time, RTC_DateTypeDef date) {
 void setup() {
     // Check power on reason before calling M5.begin()
     //  which calls Rtc.begin() which clears the timer flag.
+    uint8_t data = 0;
     Wire1.begin(21, 22);
-    uint8_t data = M5.rtc.ReadReg(0x01);
+    Wire1.beginTransmission(0x51);
+    Wire1.write(0x01);
+    Wire1.endTransmission();
+    if (Wire1.requestFrom(0x51, 1)) {
+        data = Wire1.read();
+    }
 
     M5.begin();
     // Green LED - indicates ESP32 is running
