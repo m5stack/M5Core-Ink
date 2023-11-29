@@ -58,38 +58,30 @@ void RTC::Bcd2asc(void) {
     }
 }
 
-uint8_t RTC::Bcd2ToByte(uint8_t Value) {
-    uint8_t tmp = 0;
-    tmp         = ((uint8_t)(Value & (uint8_t)0xF0) >> (uint8_t)0x4) * 10;
-    return (tmp + (Value & (uint8_t)0x0F));
+uint8_t RTC::bcd2ToByte(uint8_t value) {
+    return ((value >> 4) * 10) + (value & 0x0F);
 }
 
-uint8_t RTC::ByteToBcd2(uint8_t Value) {
-    uint8_t bcdhigh = 0;
-
-    while (Value >= 10) {
-        bcdhigh++;
-        Value -= 10;
-    }
-
-    return ((uint8_t)(bcdhigh << 4) | Value);
+uint8_t RTC::byteToBcd2(uint8_t value) {
+    std::uint_fast8_t bcdhigh = value / 10;
+    return (bcdhigh << 4) | (value - (bcdhigh * 10));
 }
 
 void RTC::GetTime(RTC_TimeTypeDef *RTC_TimeStruct) {
     uint8_t buf[3] = {0};
     if (_i2c.readBytes(BM8563_I2C_ADDR, 0x02, buf, 3)) {
-        RTC_TimeStruct->Seconds = Bcd2ToByte(buf[0] & 0x7f);  // 秒
-        RTC_TimeStruct->Minutes = Bcd2ToByte(buf[1] & 0x7f);  // 分
-        RTC_TimeStruct->Hours   = Bcd2ToByte(buf[2] & 0x3f);  // 时
+        RTC_TimeStruct->Seconds = bcd2ToByte(buf[0] & 0x7f);  // 秒
+        RTC_TimeStruct->Minutes = bcd2ToByte(buf[1] & 0x7f);  // 分
+        RTC_TimeStruct->Hours   = bcd2ToByte(buf[2] & 0x3f);  // 时
     }
 }
 
 void RTC::SetTime(RTC_TimeTypeDef *RTC_TimeStruct) {
     if (RTC_TimeStruct == NULL) return;
 
-    uint8_t buf[] = {ByteToBcd2(RTC_TimeStruct->Seconds),
-                     ByteToBcd2(RTC_TimeStruct->Minutes),
-                     ByteToBcd2(RTC_TimeStruct->Hours)};
+    uint8_t buf[] = {byteToBcd2(RTC_TimeStruct->Seconds),
+                     byteToBcd2(RTC_TimeStruct->Minutes),
+                     byteToBcd2(RTC_TimeStruct->Hours)};
 
     _i2c.writeBytes(BM8563_I2C_ADDR, 0x02, buf, sizeof(buf));
 }
@@ -97,26 +89,22 @@ void RTC::SetTime(RTC_TimeTypeDef *RTC_TimeStruct) {
 void RTC::GetDate(RTC_DateTypeDef *RTC_DateStruct) {
     uint8_t buf[4] = {0};
     if (_i2c.readBytes(BM8563_I2C_ADDR, 0x05, buf, 4)) {
-        RTC_DateStruct->Date    = Bcd2ToByte(buf[0] & 0x3f);
-        RTC_DateStruct->WeekDay = Bcd2ToByte(buf[1] & 0x07);
-        RTC_DateStruct->Month   = Bcd2ToByte(buf[2] & 0x1f);
-
-        if (buf[2] & 0x80) {
-            RTC_DateStruct->Year = 1900 + Bcd2ToByte(buf[3] & 0xff);
-        } else {
-            RTC_DateStruct->Year = 2000 + Bcd2ToByte(buf[3] & 0xff);
-        }
+        RTC_DateStruct->Date    = bcd2ToByte(buf[0] & 0x3f);
+        RTC_DateStruct->WeekDay = bcd2ToByte(buf[1] & 0x07);
+        RTC_DateStruct->Month   = bcd2ToByte(buf[2] & 0x1f);
+        RTC_DateStruct->Year =
+            bcd2ToByte(buf[3] & 0xff) + ((0x80 & buf[2]) ? 1900 : 2000);
     }
 }
 
 void RTC::SetDate(RTC_DateTypeDef *RTC_DateStruct) {
     if (RTC_DateStruct == NULL) return;
 
-    uint8_t buf[] = {ByteToBcd2(RTC_DateStruct->Date),
-                     ByteToBcd2(RTC_DateStruct->WeekDay),
-                     ByteToBcd2(RTC_DateStruct->Month) +
-                         (RTC_DateStruct->Year < 2000 ? 0x80 : 0),
-                     (uint8_t)(RTC_DateStruct->Year % 100)};
+    uint8_t buf[] = {byteToBcd2(RTC_DateStruct->Date),
+                     byteToBcd2(RTC_DateStruct->WeekDay),
+                     (std::uint8_t)(byteToBcd2(RTC_DateStruct->Month) +
+                                    (RTC_DateStruct->Year < 2000 ? 0x80 : 0)),
+                     byteToBcd2(RTC_DateStruct->Year % 100)};
 
     _i2c.writeBytes(BM8563_I2C_ADDR, 0x05, buf, sizeof(buf));
 }
@@ -157,12 +145,12 @@ int RTC::SetAlarmIRQ(const RTC_TimeTypeDef &RTC_TimeStruct) {
 
     if (RTC_TimeStruct.Minutes >= 0) {
         irq_enable = true;
-        out_buf[0] = ByteToBcd2(RTC_TimeStruct.Minutes) & 0x7f;
+        out_buf[0] = byteToBcd2(RTC_TimeStruct.Minutes) & 0x7f;
     }
 
     if (RTC_TimeStruct.Hours >= 0) {
         irq_enable = true;
-        out_buf[1] = ByteToBcd2(RTC_TimeStruct.Hours) & 0x3f;
+        out_buf[1] = byteToBcd2(RTC_TimeStruct.Hours) & 0x3f;
     }
 
     out_buf[2] = 0x80;
@@ -191,22 +179,22 @@ int RTC::SetAlarmIRQ(const RTC_DateTypeDef &RTC_DateStruct,
 
     if (RTC_TimeStruct.Minutes >= 0) {
         irq_enable = true;
-        out_buf[0] = ByteToBcd2(RTC_TimeStruct.Minutes) & 0x7f;
+        out_buf[0] = byteToBcd2(RTC_TimeStruct.Minutes) & 0x7f;
     }
 
     if (RTC_TimeStruct.Hours >= 0) {
         irq_enable = true;
-        out_buf[1] = ByteToBcd2(RTC_TimeStruct.Hours) & 0x3f;
+        out_buf[1] = byteToBcd2(RTC_TimeStruct.Hours) & 0x3f;
     }
 
     if (RTC_DateStruct.Date >= 0) {
         irq_enable = true;
-        out_buf[2] = ByteToBcd2(RTC_DateStruct.Date) & 0x3f;
+        out_buf[2] = byteToBcd2(RTC_DateStruct.Date) & 0x3f;
     }
 
     if (RTC_DateStruct.WeekDay >= 0) {
         irq_enable = true;
-        out_buf[3] = ByteToBcd2(RTC_DateStruct.WeekDay) & 0x07;
+        out_buf[3] = byteToBcd2(RTC_DateStruct.WeekDay) & 0x07;
     }
 
     uint8_t reg_value = _i2c.readByte(BM8563_I2C_ADDR, 0x01);
