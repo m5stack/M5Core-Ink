@@ -10,8 +10,11 @@ int M5CoreInk::begin(bool InkEnable, bool wireEnable, bool SpeakerEnable) {
     pinMode(POWER_HOLD_PIN, OUTPUT);
     digitalWrite(POWER_HOLD_PIN, HIGH);  // Hold power
 
+#if (ESP_IDF_VERSION > ESP_IDF_VERSION_VAL(4, 4, 6))
+    // pinMode(1, OUTPUT);
+#else
     pinMode(1, OUTPUT);
-
+#endif
     pinMode(LED_EXT_PIN, OUTPUT);
 
     Serial.begin(115200);
