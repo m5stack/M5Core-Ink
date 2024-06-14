@@ -10,6 +10,7 @@ typedef struct RTC_Time {
     int8_t Hours;
     int8_t Minutes;
     int8_t Seconds;
+    bool VLFlag;
     RTC_Time() : Hours(), Minutes(), Seconds() {
     }
     RTC_Time(int8_t h, int8_t m, int8_t s) : Hours(h), Minutes(m), Seconds(s) {

@@ -70,6 +70,7 @@ uint8_t RTC::byteToBcd2(uint8_t value) {
 void RTC::GetTime(RTC_TimeTypeDef *RTC_TimeStruct) {
     uint8_t buf[3] = {0};
     if (_i2c.readBytes(BM8563_I2C_ADDR, 0x02, buf, 3)) {
+        RTC_TimeStruct->VLFlag  = (buf[0] & 0x80) >> 7;
         RTC_TimeStruct->Seconds = bcd2ToByte(buf[0] & 0x7f);  // 秒
         RTC_TimeStruct->Minutes = bcd2ToByte(buf[1] & 0x7f);  // 分
         RTC_TimeStruct->Hours   = bcd2ToByte(buf[2] & 0x3f);  // 时
