@@ -5,17 +5,15 @@
 #include "config.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif /* __cplusplus */
 #include "esp32-hal-dac.h"
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-class SPEAKER
-{
-public:
+class SPEAKER {
+   public:
     SPEAKER(void);
 
     void begin();
@@ -31,7 +29,7 @@ public:
     void setVolume(uint8_t volume);
     void playMusic(const uint8_t *music_data, uint16_t sample_rate);
 
-private:
+   private:
     uint32_t _count;
     uint8_t _volume;
     uint16_t _beep_duration;

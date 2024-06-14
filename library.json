@@ -1,16 +1,16 @@
 {
-  "name": "M5-CoreInk",
+  "name": "M5Core-Ink",
   "description": "M5Stack CoreInk development board",
   "keywords": "M5Stack CoreInk",
   "authors": {
-    "name": "Hades2001, M5Stack",
+    "name": "M5Stack",
     "url": "http://www.m5stack.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/m5stack/M5-CoreInk.git"
+    "url": "https://github.com/m5stack/M5Core-Ink.git"
   },
-  "version": "0.0.2",
-  "framework": "arduino",
+  "version": "1.0.0",
+  "frameworks": "arduino",
   "platforms": "espressif32"
 }
