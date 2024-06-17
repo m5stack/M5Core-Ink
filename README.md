@@ -1,4 +1,4 @@
-# Core-Ink Library
+# M5CoreInk Library
 
 [![Arduino Compile](https://github.com/m5stack/M5Core-Ink/actions/workflows/arduino-action-coreink-compile.yml/badge.svg)](https://github.com/m5stack/M5Core-Ink/actions/workflows/arduino-action-paper-compile.yml)
 [![Arduino Lint](https://github.com/m5stack/M5Core-Ink/actions/workflows/Arduino-Lint-Check.yml/badge.svg)](https://github.com/m5stack/M5Core-Ink/actions/workflows/Arduino-Lint-Check.yml)
